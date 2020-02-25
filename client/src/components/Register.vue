@@ -6,10 +6,30 @@
     v-model="email"
     placeholder="email"/>
   <br>
+  <input type="username"
+    name="username"
+    v-model="username"
+    placeholder="username"/>
+    <br>
   <input type="password"
     name="password"
     v-model="password"
     placeholder="password"/>
+    <br>
+  <input type="phonenumber"
+    name="phonenumber"
+    v-model="phonenumber"
+    placeholder="phonenumber"/>
+    <br>
+  <input type="birthdate"
+    name="birthdate"
+    v-model="birthdate"
+    placeholder="birthdate"/>
+    <br>
+  <input type="birthyear"
+    name="birthyear"
+    v-model="birthyear"
+    placeholder="birthyear"/>
     <br>
     <button
        @click="register">
@@ -25,14 +45,19 @@ export default {
   data () {
     return {
       email: '',
-      passowrd: ''
+      passowrd: '',
+      error: null
     }
   },
   methods: {
     async register () {
       await AuthenticationService.register({
         email: this.email,
-        passowrd: this.passowrd
+        password: this.password,
+        birthdate: this.birthdate,
+        birth_year: this.birthyear,
+        phonenumber: this.phonenumber,
+        username: this.username
       })
     }
   }
