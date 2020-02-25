@@ -4,17 +4,12 @@ const Sequelize = require('sequelize')
 const config = require('../config/config')
 const db = {}
 
-const sequelize = new Sequelize(config.db.DB, config.db.USERNAME, config.db.PASSWORD, {
-  host: config.db.HOST,
-  dialect: config.db.dialect,
-  operatorsAliases: false,
-  pool: {
-    max: config.db.pool.max,
-    min: config.db.pool.min,
-    acquire: config.db.pool.acquire,
-    idle: config.db.pool.idle
-  }
-})
+const sequelize = new Sequelize(
+  config.db.database,
+  config.db.user,
+  config.db.password,
+  config.db.options
+)
 
 fs
   .readdirSync(__dirname)
