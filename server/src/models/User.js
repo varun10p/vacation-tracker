@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) =>
       unique: true
     },
     birthdate: DataTypes.STRING,
-    birthyear: DataTypes.INTEGER,
+    birth_year: DataTypes.INTEGER,
     username: DataTypes.STRING,
     password: DataTypes.STRING
   })
