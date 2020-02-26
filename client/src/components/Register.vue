@@ -2,44 +2,48 @@
     <v-layout column>
       <v-flex justify-sm-center>
         <v-container col-md-6 offset-md-3 >
-          <v-toolbar dense >
-            <v-toolbar-title>Register</v-toolbar-title>
-          </v-toolbar>
+          <v-app-bar dense dark>
+            <v-app-bar-title><b>Register</b></v-app-bar-title>
+          </v-app-bar>
           <div>
-            <v-text-field
-              label="Email"
-              v-model="email"
-            ></v-text-field>
-              <br>
-            <v-text-field
-              label="Username"
-              v-model="username"
-            ></v-text-field>
-              <br>
-            <v-text-field
-              label="Password"
-              type="password"
-              v-model="passowrd"
-              autocomplete="new-password"
-            ></v-text-field>
-              <br>
-            <v-text-field
-              label="Phonenumber"
-              v-model="phonenumber"
-              placeholder="XXX-YYY-ZZZ"
-            ></v-text-field>
-              <br>
-            <v-text-field
-              label="Birthmonth"
-              v-model="phonenumber"
-              placeholder="XX/YY"
-            ></v-text-field>
-              <br>
-            <v-text-field
-              label="Birthmonth"
-              v-model="phonenumber"
-              placeholder="Example 2000"
-            ></v-text-field>
+            <form
+            name="register-form"
+            autocomplete="off">
+              <v-text-field
+                label="Email"
+                v-model="email"
+              ></v-text-field>
+                <br>
+              <v-text-field
+                label="Username"
+                v-model="username"
+              ></v-text-field>
+                <br>
+              <v-text-field
+                label="Password"
+                type="password"
+                v-model="password"
+                autocomplete="new-password"
+              ></v-text-field>
+                <br>
+              <v-text-field
+                label="Phonenumber"
+                v-model="phonenumber"
+                placeholder="XXX-YYY-ZZZ"
+              ></v-text-field>
+                <br>
+              <v-text-field
+                label="Birthdate"
+                v-model="birthdate"
+                placeholder="XX/YY"
+              ></v-text-field>
+                <br>
+              <v-text-field
+                label="Birthyear"
+                v-model="birthyear"
+                placeholder="Example 2000"
+              ></v-text-field>
+            </form>
             <br>
             <div class="danger-alert" v-html="error" />
             <br>
@@ -56,21 +60,23 @@ export default {
   data () {
     return {
       email: '',
-      passowrd: '',
+      password: '',
       error: null
     }
   },
   methods: {
     async register () {
       try {
-        await AuthenticationService.register({
+        const response = await AuthenticationService.register({
           email: this.email,
+          username: this.username,
           password: this.password,
-          birthdate: this.birthdate,
-          birth_year: this.birthyear,
           phonenumber: this.phonenumber,
-          username: this.username
+          birthdate: this.birthdate,
+          birth_year: this.birthyear
         })
+        this.$store.dispatch('setToken', response.data.token)
+        this.$store.dispatch('setToken', response.data.user)
       } catch (error) {
         this.error = error.response.data.error
       }

@@ -11,6 +11,7 @@ module.exports = {
     })
 
     const { error } = schema.validate(req.body)
+    console.log(error)
     if (error) {
       switch (error.details[0].context.key) {
         case 'email':
