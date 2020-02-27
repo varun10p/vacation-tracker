@@ -1,11 +1,11 @@
 const { User } = require('../models')
-const jt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 
-function jwtSigninUser (user) {
-  const ONE_MONTH = 60 * 60 * 24 * 30
-  return jt.sign(user, config.authentication.jwtSecret, {
-    expiresIn: ONE_MONTH
+function jwtSignUser (user) {
+  const ONE_WEEK = 60 * 60 * 24 * 7
+  return jwt.sign(user, config.authentication.jwtSecret, {
+    expiresIn: ONE_WEEK
   })
 }
 
@@ -13,11 +13,14 @@ module.exports = {
   async register (req, res) {
     try {
       const user = await User.create(req.body)
-      res.send(user.toJSON())
+      const userJson = user.toJSON()
+      res.send({
+        user: userJson,
+        token: jwtSignUser(userJson)
+      })
     } catch (err) {
-      console.log(err)
       res.status(400).send({
-        error: 'Email or Phonenumber is already in use'
+        error: 'This email account is already in use.'
       })
     }
   },
@@ -29,28 +32,28 @@ module.exports = {
           username: username
         }
       })
+
       if (!user) {
         return res.status(403).send({
-          error: 'The login information was not correct'
+          error: 'The login information was incorrect'
         })
       }
 
-      const exisitngPassowrd = await user.comparePassword(password)
-      if (!exisitngPassowrd) {
+      const isPasswordValid = await user.comparePassword(password)
+      if (!isPasswordValid) {
         return res.status(403).send({
-          error: 'The password was incorrect'
+          error: 'The login information was incorrect'
         })
       }
 
-      const userJSON = user.toJSON()
-      res.status(403).send({
-        user: userJSON,
-        token: jwtSigninUser
+      const userJson = user.toJSON()
+      res.send({
+        user: userJson,
+        token: jwtSignUser(userJson)
       })
-      res.send(user.toJSON())
     } catch (err) {
-      res.status(400).send({
-        error: 'A login error has occured'
+      res.status(500).send({
+        error: 'An error has occured trying to log in'
       })
     }
   }

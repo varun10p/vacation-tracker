@@ -1,7 +1,7 @@
 const Promise = require('bluebird')
 const bcrypt = Promise.promisifyAll(require('bcrypt-nodejs'))
 
-function hasPassword (user, options) {
+function hashPassword (user, options) {
   const SALT_FACTOR = 8
 
   if (!user.changed('password')) {
@@ -9,8 +9,8 @@ function hasPassword (user, options) {
   }
 
   return bcrypt
-    .genSalt(SALT_FACTOR)
-    .then(salt => bcrypt.hash(user.password, salt, null))
+    .genSaltAsync(SALT_FACTOR)
+    .then(salt => bcrypt.hashAsync(user.password, salt, null))
     .then(hash => {
       user.setDataValue('password', hash)
     })
@@ -32,18 +32,16 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING
   }, {
     hooks: {
-      beforeCreate: hasPassword,
-      beforeUpdate: hasPassword,
-      beforeSave: hasPassword
+      beforeSave: hashPassword
     }
   })
 
-  User.prototype.comparePassword = (password) => {
+  User.prototype.comparePassword = function (password) {
     return bcrypt.compareAsync(password, this.password)
   }
 
   User.associate = function (models) {
-
+    User.hasMany(models.Trip)
   }
 
   return User

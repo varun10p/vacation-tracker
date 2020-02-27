@@ -8,9 +8,11 @@
         </span>
       </v-app-bar-title>
         <v-app-bar-items>
-          <v-btn flat dark>Trips
+          <v-btn flat dark
+          @click="navigateTo({name: 'trips'})">Trips
           </v-btn>
-          <v-btn flat dark>Files
+          <v-btn flat dark
+          @click="navigateTo({name: 'files'})">Files
           </v-btn>
         </v-app-bar-items>
         <v-spacer></v-spacer>
@@ -21,6 +23,9 @@
             <v-btn flat dark v-if="!$store.state.loginStatus"
             @click="navigateTo({name: 'register'})">Sign Up
               </v-btn>
+          <v-btn flat dark v-if="$store.state.loginStatus"
+            @click="logout">Logout
+              </v-btn>
           <v-spacer></v-spacer>
         </v-app-bar-items>
     </v-app-bar>
@@ -30,6 +35,13 @@ export default {
   methods: {
     navigateTo (route) {
       this.$router.push(route)
+    },
+    logout () {
+      this.$store.dispatch('setToken', null)
+      this.$store.dispatch('setUser', null)
+      this.$router.push({
+        name: 'root'
+      })
     }
   }
 }

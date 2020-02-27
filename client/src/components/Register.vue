@@ -2,10 +2,7 @@
     <v-layout column>
       <v-flex justify-sm-center>
         <v-container col-md-6 offset-md-3 >
-          <v-app-bar dense dark>
-            <v-app-bar-title><b>Register</b></v-app-bar-title>
-          </v-app-bar>
-          <div>
+          <panel title="Register">
             <form
             name="register-form"
             autocomplete="off">
@@ -48,18 +45,19 @@
             <div class="danger-alert" v-html="error" />
             <br>
             <v-btn class="cyan" @click="register"> Register </v-btn>
-          </div>
+          </panel>
         </v-container>
       </v-flex>
     </v-layout>
 </template>
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
+import Panel from '@/components/Panel'
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      email: '',
+      username: '',
       password: '',
       error: null
     }
@@ -76,11 +74,14 @@ export default {
           birth_year: this.birthyear
         })
         this.$store.dispatch('setToken', response.data.token)
-        this.$store.dispatch('setToken', response.data.user)
+        this.$store.dispatch('setUser', response.data.user)
       } catch (error) {
         this.error = error.response.data.error
       }
     }
+  },
+  components: {
+    Panel
   }
 }
 </script>

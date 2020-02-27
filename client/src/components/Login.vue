@@ -2,10 +2,7 @@
     <v-layout column>
       <v-flex justify-sm-center>
         <v-container col-md-6 offset-md-3 >
-          <v-app-bar dense dark>
-            <v-app-bar-title><b>Login</b></v-app-bar-title>
-          </v-app-bar>
-          <div>
+          <panel title="Login">
             <v-text-field
               label="Username"
               v-model="username"
@@ -21,17 +18,18 @@
             <div class="danger-alert" v-html="error" />
             <br>
             <v-btn class="cyan" @click="login"> Login </v-btn>
-          </div>
+          </panel>
         </v-container>
       </v-flex>
     </v-layout>
 </template>
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
+import Panel from '@/components/Panel'
 export default {
   data () {
     return {
-      email: '',
+      username: '',
       password: '',
       error: null
     }
@@ -44,11 +42,14 @@ export default {
           password: this.password
         })
         this.$store.dispatch('setToken', response.data.token)
-        this.$store.dispatch('setToken', response.data.user)
+        this.$store.dispatch('setUser', response.data.user)
       } catch (error) {
         this.error = error.response.data.error
       }
     }
+  },
+  components: {
+    Panel
   }
 }
 </script>
