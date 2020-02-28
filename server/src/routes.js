@@ -1,6 +1,7 @@
 const AuthenticationController = require('./controllers/AuthenticationController')
 const AuthenticationValidator = require('./validators/AuthenticationControllerValidator')
-const TripsController = require('./validators/TripsController')
+const TripsController = require('./controllers/TripsController')
+const FilesController = require('./controllers/FilesController')
 module.exports = (app) => {
   app.post('/register',
     AuthenticationValidator.register,
@@ -11,7 +12,7 @@ module.exports = (app) => {
 
   app.get('/trips',
     TripsController.index)
-    
+
   app.get('/files',
     FilesController.index)
 }

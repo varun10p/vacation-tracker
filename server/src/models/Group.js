@@ -1,12 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
-    const Group = sequelize.define('Group', {
-      name: {
-        type: DataTypes.STRING
-      }
-    })
-
-    Group.associate = function (models) {
-        Group.hasMany(models.User)
+  const Group = sequelize.define('Group', {
+    name: {
+      type: DataTypes.STRING
     }
-    return Group
+  })
+
+  Group.associate = function (models) {
+    Group.hasMany(models.User)
   }
+  return Group
+}

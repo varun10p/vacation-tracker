@@ -8,10 +8,10 @@
         </span>
       </v-app-bar-title>
         <v-app-bar-items>
-          <v-btn flat dark
+          <v-btn flat dark v-if="$store.state.loginStatus"
           @click="navigateTo({name: 'trips'})">Trips
           </v-btn>
-          <v-btn flat dark
+          <v-btn flat dark v-if="$store.state.loginStatus"
           @click="navigateTo({name: 'files'})">Files
           </v-btn>
         </v-app-bar-items>

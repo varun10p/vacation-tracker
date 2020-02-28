@@ -3,7 +3,26 @@
         <v-container col-md-6 offset-md-3 >
         <panel title="Trips">
         </panel>
-          </v-container>
+        <v-btn
+            slot="action"
+            :to="{
+              name: 'trips-create'
+            }"
+            >
+          <v-icon>Add Trip</v-icon>
+          </v-btn>
+          <div>
+      <v-layout>
+        <v-flex>
+          <div class="song-title">
+            <v-spacer> </v-spacer>
+            <v-btn> India
+          </v-btn>
+          </div>
+        </v-flex>
+      </v-layout>
+      </div>
+        </v-container>
     </div>
 </template>
 
@@ -14,9 +33,19 @@ export default {
   components: {
     Panel
   },
-  async mounted () {
+  data () {
+    return {
+      trips: null
+    }
+  },
+  watch: {
     // request trips
-    this.trips = await TripsService.index()
+    '$route.query.search': {
+      immediate: true,
+      async handler (value) {
+        this.trips = (await TripsService.index(value)).data
+      }
+    }
   }
 }
 </script>

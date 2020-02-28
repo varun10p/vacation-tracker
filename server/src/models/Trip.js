@@ -1,13 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
-    const Trip = sequelize.define('Trip', {
-      destination: {
-        type: DataTypes.STRING
-      }
-    })
-
-    Trip.associate = function (models) {
-        Trip.hasMany(models.Stop)
+  const Trip = sequelize.define('Trip', {
+    destination: {
+      type: DataTypes.STRING
     }
-    return Trip
+  })
+
+  Trip.associate = function (models) {
+
   }
-  
+  return Trip
+}
